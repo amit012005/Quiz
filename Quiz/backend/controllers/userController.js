@@ -35,12 +35,6 @@ async function registerUser(req, res) {
   });
 
   if (user) {
-    // res.status(201).json({
-    //   _id: user._id,
-    //   name: user.name,
-    //   email: user.email,
-    //   isAdmin: user.isAdmin,
-    // });
     console.log(user);
     res.status(200).json(user);
   } else {

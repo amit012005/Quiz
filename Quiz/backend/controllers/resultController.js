@@ -38,4 +38,4 @@ const addResult = async (req, res) => {
     }
   };
 
-export { addResult, getResults };
+export { addResult, getResults};

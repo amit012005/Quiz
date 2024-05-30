@@ -3,32 +3,37 @@ import Exam from "../models/questionModel.js";
 const registerExam = async (req, res) => {
   const { title, examCode, instructions, time, creator, duration } = req.body;
   console.log(req.body);
-  const examExists = await Exam.findOne({ examCode });
 
-  if (examExists) {
-    res.status(400);
-    console.log("hii");
-    throw new Error("Course already exists");
-  }
+  try {
+    const examExists = await Exam.findOne({ examCode });
 
-  const exam = await Exam.create({
-    title,
-    examCode,
-    instructions,
-    time,
-    creator,
-    duration,
-  });
+    if (examExists) {
+      console.log("Course already exists");
+      return res.status(400).json({ message: "Course already exists" });
+    }
 
-  if (exam) {
-    res.status(201).json({
-      _id: exam._id,
+    const exam = await Exam.create({
+      title,
+      examCode,
+      instructions,
+      time,
+      creator,
+      duration,
     });
-  } else {
-    res.status(400);
-    throw new Error("Invalid user data");
+
+    if (exam) {
+      return res.status(201).json({
+        _id: exam._id,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid exam data" });
+    }
+  } catch (error) {
+    console.error("Error registering exam:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 const getExams = async (req, res) => {
   console.log("questionController");
   try {
@@ -65,4 +70,26 @@ const addExam = async (req, res) => {
   res.status(200).json(exam);
 };
 
-export { registerExam, getExams, deleteExam, addExam };
+const deleteQuestion = async (req, res) => {
+  try {
+    const { id, questionId } = req.params;
+    console.log(id);
+    console.log(questionId);
+
+    const exam = await Exam.findById(id);
+
+    if (!exam) {
+      return res.status(404).json({ message: 'Exam not found' });
+    }
+    exam.multiple = exam.multiple.filter((question) => question._id.toString() !== questionId);
+    console.log(exam);
+    await exam.save();
+
+    res.status(200).json({ message: 'Question deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting question:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export { registerExam, getExams, deleteExam, addExam ,deleteQuestion};

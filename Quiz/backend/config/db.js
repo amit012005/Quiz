@@ -6,7 +6,11 @@ const url = process.env.MONGO_URI;
 // console.log(url);
 connectDB().catch((err) => console.log(err));
 async function connectDB() {
-  await mongoose.connect(url);
+  await mongoose.connect(url,{
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    family: 4,
+});
   console.log(`Quiz database connected Successfully to ${url}`);
 }
 export default connectDB;

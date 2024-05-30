@@ -15,7 +15,7 @@ const getAllResponse = async (req, res) => {
   const exams = await Response.find({
     exam: req.params.id,
   });
-
+  console.log(exams);
   res.json(exams);
 };
 
@@ -33,10 +33,10 @@ const addResponse = async (req, res) => {
   console.log("responsecontroller",req.body);
   Response.deleteMany({ exam: exam_id, student: user_id })
     .then(function () {
-      console.log("Data deleted"); // Success
+      console.log("Data deleted"); 
     })
     .catch(function (error) {
-      console.log(error); // Failure
+      console.log(error); 
     });
   try {
     const response = await Response.create({

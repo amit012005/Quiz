@@ -1,0 +1,37 @@
+@import "~mdb-ui-kit/css/mdb.min.css";
+.active{
+  color: red;
+}
+.header {
+  background-color: #7840a8;
+}
+
+
+.header .compact-navbar {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.header .navbar-brand .brand-text {
+  font-size: 1.25rem;
+}
+
+.header .navbar-brand img {
+  height: 35px;
+}
+
+.header .navbar-nav .nav-link {
+  font-size: 1rem;
+}
+
+.header .navbar-nav .nav-item .dropdown-menu {
+  font-size: 1rem;
+}
+
+.header .navbar-nav .nav-item .dropdown-item {
+  font-size: 1rem;
+}
+
+.header .navbar-nav .nav-item .dropdown-item:hover {
+  background-color: #495057;
+}
