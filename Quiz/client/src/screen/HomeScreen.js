@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect ,useState} from "react";
 import { Toast, ToastBody, ToastHeader, Card, Button, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 function HomeScreen() {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("front", user ? user._id : null);
+  const [results, setResults] = useState([{}]);
 
   useEffect(() => {
     const getResults = async () => {
@@ -15,9 +15,7 @@ function HomeScreen() {
         try {
           const response = await axios.get(`http://localhost:8080/result/${user._id}`);
           if (response) {
-            console.log(response);
-            const data = JSON.stringify(response.data);
-            localStorage.setItem("results", data);
+            setResults(response.data);
           }
         } catch (error) {
           toast.error("Error in fetching results");
@@ -27,8 +25,8 @@ function HomeScreen() {
     getResults();
   }, []);
 
-  const results = JSON.parse(localStorage.getItem("results"));
-  console.log(results);
+ 
+  
 
   return (
     <Container className="mt-5">
@@ -39,7 +37,7 @@ function HomeScreen() {
             A project trying to use the learned concepts in making real world projects that could really make a difference in the lives of people around us.
           </p>
           <p>
-            <strong>by</strong> ADEEB AHMAD
+            <strong>by</strong> ADEEB AHMAD & AMIT KUMAR
           </p>
           <p>
             <strong>MOTILAL NEHRU NATIONAL INSTITUTE OF TECHNOLOGY, ALLAHABAD</strong>

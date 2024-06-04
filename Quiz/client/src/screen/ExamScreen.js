@@ -17,9 +17,9 @@ const ExamScreen = () => {
 
   const examList = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/question", {
-        params: { creator: userInfo.email },
-      });
+      const response = await axios.get("http://localhost:8080/api/question"
+        
+      );
       setExams(response.data);
       toast.success("Exams loaded successfully");
     } catch (error) {
@@ -29,7 +29,7 @@ const ExamScreen = () => {
   };
 
   useEffect(() => {
-    console.log(userInfo);
+    
     examList();
   }, []);
 
@@ -94,7 +94,7 @@ const ExamScreen = () => {
   return (
     <div className="container mx-auto p-6">
       <div className="text-right mb-4">
-      {userInfo.isAdmin ? (
+      {userInfo && userInfo.isAdmin ? (
       <button
         className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
         onClick={handleShow}
@@ -200,7 +200,7 @@ const ExamScreen = () => {
               </button>
             </Link>
           )}
-          {userInfo.isAdmin && (
+          {userInfo && userInfo.isAdmin && (
             <Link to={`/response/faculty/${exam._id}`}>
               <button className="bg-gradient-to-r from-purple-400 to-pink-500 text-white py-2 px-6 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl mt-4">
                 Response

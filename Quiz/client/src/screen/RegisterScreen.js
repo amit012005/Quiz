@@ -11,7 +11,7 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const { updateUser, setUserInfo } = useUser();
+  
   async function registerHandler(e) {
     e.preventDefault();
     if (name && email && password && confirmPassword) {
