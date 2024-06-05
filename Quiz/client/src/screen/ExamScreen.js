@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const ExamScreen = () => {
+  const navigate=useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("user"));
-
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [examCode, setExamCode] = useState("");
@@ -72,8 +72,6 @@ const ExamScreen = () => {
   };
 
   const handleStart = (exam) => {
-    const data = JSON.stringify(exam);
-    localStorage.setItem("exam", data);
     const currDate = new Date();
     const examdate = exam.time.substring(0, 10);
     const hrs = +exam.time.substring(11, 13);
@@ -87,7 +85,7 @@ const ExamScreen = () => {
     if (examDate > currDate) {
       alert("You are not allowed to give this test now. Please check the date and time of your test.");
     } else {
-      window.location.href = `/quiz/${exam._id}`;
+      navigate(`/quiz/${exam._id}`, { state: { exam } });
     }
   };
 

@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 
 const QuizScreen = () => {
+  const location = useLocation();
+  const { exam } = location.state; 
   const [response, setResponse] = useState([]);
   const [attempts, setAttempts] = useState(0);
-  const exam = JSON.parse(localStorage.getItem("exam"));
+  
   const [min, setMin] = useState(exam.duration - 1);
   const [sec, setSec] = useState(59);
 
@@ -22,7 +25,9 @@ const QuizScreen = () => {
 
   const handleChange = (e) => {
     const answer = e.target.value;
-    const quesnum = e.target.name;
+    let quesnum = e.target.name;
+    let num = parseInt(quesnum) + 1;
+    quesnum = num.toString();
     const newResponse = response.map((res) =>
       res.quesnum === quesnum ? { ...res, answer } : res
     );
@@ -30,6 +35,7 @@ const QuizScreen = () => {
       newResponse.push({ quesnum, answer });
     }
     setResponse(newResponse);
+    console.log(newResponse);
   };
 
   const submitAnswer = async () => {
@@ -163,46 +169,57 @@ const QuizScreen = () => {
   }, [exam.duration]);
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-center">
-        {exam.title}
-        <br />
-        <span className="text-lg font-bold">Attempt All Questions</span>
-        <br />
-        <span className="text-sm">
-          Time left: {min < 10 ? `0${min}` : min}:{sec < 10 ? `0${sec}` : sec}
-        </span>
-      </h1>
-      <hr className="my-6" />
-      <form onSubmit={submitHandler}>
+    <div className="quiz-screen">
+      <div className="quiz-header">
+        <h1>{exam.title}</h1>
+        <h4>Attempt All Questions</h4>
+        <h5>Time left: {`${min} : ${sec}`}</h5>
+      </div>
+      <hr />
+      <Form onSubmit={submitHandler}>
         {exam.multiple.map((question, number) => (
-          <div key={number} className="mb-6">
-            <h4 className="font-bold">
-              Q.{number + 1} {question.question}
-            </h4>
-            {[question.optionA, question.optionB, question.optionC, question.optionD].map(
-              (option, index) => (
-                <div key={index} className="mb-2">
-                  <input
-                    type="radio"
-                    id={`option${index + 1}_question${number}`}
-                    name={`${number}`}
-                    value={option}
-                    onChange={handleChange}
-                    className="mr-2"
-                  />
-                  <label htmlFor={`option${index + 1}_question${number}`}>{option}</label>
-                </div>
-              )
-            )}
+          <div className="quiz-question" key={number}>
+            <h4>{`Q.${number + 1} ${question.question}`}</h4>
+            <Form.Check
+              type="radio"
+              id={`option1 ${number}`}
+              name={`${number}`}
+              value={question.optionA}
+              label={question.optionA}
+              onChange={handleChange}
+            />
+            <Form.Check
+              type="radio"
+              id={`option2 ${number}`}
+              name={`${number}`}
+              value={question.optionB}
+              label={question.optionB}
+              onChange={handleChange}
+            />
+            <Form.Check
+              type="radio"
+              id={`option3 ${number}`}
+              name={`${number}`}
+              value={question.optionC}
+              label={question.optionC}
+              onChange={handleChange}
+            />
+            <Form.Check
+              type="radio"
+              id={`option4 ${number}`}
+              name={`${number}`}
+              value={question.optionD}
+              label={question.optionD}
+              onChange={handleChange}
+            />
           </div>
         ))}
-        <div className="text-center">
-          <Button type="submit" variant="primary" className="py-2 px-6 rounded-full">
+        <div className="submit-button">
+          <Button type="submit" variant="primary">
             Submit
           </Button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 };
